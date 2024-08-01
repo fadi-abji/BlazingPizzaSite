@@ -1,52 +1,46 @@
 ﻿@page "/"
 @using BlazingPizzaSite.Data
 @using BlazingPizzaSite.Model
+@using BlazingPizzaSite.Shared
+@using BlazingPizzaSite.Services
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 @inject PizzaService PizzaSvc
+@inject OrderState OrderState
+@rendermode InteractiveServer
 
 
 <div class="main">
-  <h1>Blazing Pizzas</h1>
-  <ul class="pizza-cards">
-    @if (specials != null)
-    {
-      @foreach (var special in specials)
-      {
-        <li @onclick="@(() => ShowConfigurePizzaDialog(special))"  style="background-image: url('@special.ImageUrl')">
-          <div class="pizza-info">
-              <span class="title">@special.Name</span>
-                  @special.Description
-                <span class="price">@special.GetFormattedBasePrice()</span>
-          </div>
-        </li>
-      }
-    }
-  </ul>
+    <h1>Blazing Pizzas</h1>
+    <ul class="pizza-cards">
+        @if (specials != null)
+        {
+            @foreach (var special in specials)
+            {
+                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
+                    <div class="pizza-info">
+                        <span class="title">@special.Name</span>
+                        @special.Description
+                        <span class="price">@special.GetFormattedBasePrice()</span>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
 </div>
-
+@if (OrderState.ShowingConfigureDialog)
+{
+    <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
+                          OnCancel="OrderState.CancelConfigurePizzaDialog"
+                          OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
+}
 
 @code {
-
-    Pizza configuringPizza;
-    bool showingConfigureDialog;
-
     List<PizzaSpecial> specials = new();
-
 
     protected async override Task OnInitializedAsync()
     {
         specials = await PizzaSvc.GetPizzasAsync();
         await base.OnInitializedAsync();
-    }
-
-    void ShowConfigurePizzaDialog(PizzaSpecial special)
-    {
-        configuringPizza = new Pizza()
-            {
-                Special = special,
-                SpecialId = special.Id,
-                Size = Pizza.DefaultSize
-            };
-
-        showingConfigureDialog = true;
     }
 }
