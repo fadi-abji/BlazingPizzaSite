@@ -1,4 +1,5 @@
 ﻿using BlazingPizzaSite.Model;
+using System.Runtime.CompilerServices;
 
 namespace BlazingPizzaSite.Services
 {
@@ -39,6 +40,11 @@ namespace BlazingPizzaSite.Services
         public void RemoveConfiguredPizza(Pizza pizza)
         {
             Order.Pizzas.Remove(pizza);
+        }
+
+        public void ResetOrder()
+        {
+            Order = new Order();
         }
     }
 }
