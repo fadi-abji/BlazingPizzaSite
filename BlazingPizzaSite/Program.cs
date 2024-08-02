@@ -1,7 +1,10 @@
 using BlazingPizzaSite.Components;
+using BlazingPizzaSite.Data;
 using BlazingPizzaSite.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<PizzaStoreContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSingleton<PizzaService>();
 builder.Services.AddScoped<OrderState>();

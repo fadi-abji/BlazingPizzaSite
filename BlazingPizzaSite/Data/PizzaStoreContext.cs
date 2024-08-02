@@ -1,7 +1,6 @@
 ﻿using BlazingPizzaSite.Model;
+using BlazingPizzaSite.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace BlazingPizzaSite.Data
 {
@@ -34,6 +33,7 @@ namespace BlazingPizzaSite.Data
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Name = "Margherita", BasePrice = 9.99M, Description = "Traditional Italian pizza with tomatoes and basil", ImageUrl = "img/pizzas/margherita.jpg" });
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Name = "Basic Cheese Pizza", BasePrice = 11.99M, Description = "It's cheesy and delicious. Why wouldn't you want one?", ImageUrl = "img/pizzas/cheese.jpg" });
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Name = "Classic pepperoni", BasePrice = 10.5M, Description = "It's the pizza you grew up with, but Blazing hot!", ImageUrl = "img/pizzas/pepperoni.jpg" });
+
         }
 
     }
