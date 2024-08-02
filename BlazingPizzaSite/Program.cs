@@ -19,14 +19,14 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddSingleton<PizzaService>();
 builder.Services.AddScoped<OrderState>();
-//builder.Services.AddHttpClient();
+builder.Services.AddHttpClient();
 
 // Register HttpClient with scoped lifetime and configure the base address
-builder.Services.AddScoped<HttpClient>(sp =>
-{
-    var navigationManager = sp.GetRequiredService<NavigationManager>();
-    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
-});
+//builder.Services.AddScoped<HttpClient>(sp =>
+//{
+//    var navigationManager = sp.GetRequiredService<NavigationManager>();
+//    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+//});
 
 var app = builder.Build();
 

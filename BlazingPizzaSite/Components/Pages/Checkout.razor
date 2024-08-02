@@ -6,17 +6,6 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-<div class="top-bar">
-    <a class="logo" href="">
-        <img src="img/logo.svg" />
-    </a>
-
-    <a href="" class="nav-tab">
-        <img src="img/pizza-slice.svg" />
-        <div>Get Pizza</div>
-    </a>
-
-</div>
 
 <div class="main">
     <div class="checkout-cols">
@@ -58,23 +47,28 @@
         {
             isSubmitting = true;
             //respond 400 error
-            var response = await HttpClient.PostAsJsonAsync($"{NavigationManager.BaseUri}orders", OrderState.Order);
-            if(response.IsSuccessStatusCode)
-            {
+            var uri = NavigationManager.BaseUri + "orders";
+            var response = await HttpClient.PostAsJsonAsync(uri, OrderState.Order);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+
+            // if(response.IsSuccessStatusCode)
+            // {
                 var newOrderId = await response.Content.ReadFromJsonAsync<int>();
                 OrderState.ResetOrder();
                 NavigationManager.NavigateTo($"myorders/{newOrderId}");
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error: {response.StatusCode} - {errorContent}");
-            }
+            // }
+            // else
+            // {
+            //     var errorContent = await response.Content.ReadAsStringAsync();
+            //     Console.WriteLine($"Error: {response.StatusCode} - {errorContent}");
+            // }
         }
         catch (Exception ex)
         {
             
-            throw;
+            throw; 
         }
     }
 }
