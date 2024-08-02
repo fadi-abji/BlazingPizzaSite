@@ -1,6 +1,7 @@
 using BlazingPizzaSite.Components;
-using BlazingPizzaSite.Data;
 using BlazingPizzaSite.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddControllers();
+
 builder.Services.AddSingleton<PizzaService>();
 builder.Services.AddScoped<OrderState>();
-builder.Services.AddHttpClient();
+//builder.Services.AddHttpClient();
+
+// Register HttpClient with scoped lifetime and configure the base address
+builder.Services.AddScoped<HttpClient>(sp =>
+{
+    var navigationManager = sp.GetRequiredService<NavigationManager>();
+    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+});
 
 var app = builder.Build();
 
@@ -29,5 +39,6 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.MapControllers();
 
 app.Run();

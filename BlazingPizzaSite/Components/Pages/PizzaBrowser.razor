@@ -1,8 +1,8 @@
 ﻿@page "/"
-@using BlazingPizzaSite.Data
 @using BlazingPizzaSite.Model
-@using BlazingPizzaSite.Shared
 @using BlazingPizzaSite.Services
+@using BlazingPizzaSite.Data
+@using BlazingPizzaSite.Shared
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject PizzaService PizzaSvc
@@ -19,6 +19,10 @@
         <div>Get Pizza</div>
     </a>
 
+    <a href="myorders" class="nav-tab">
+        <img src="img/bike.svg" />
+        <div>My orders</div>
+    </a>
 </div>
 
 <div class="main">

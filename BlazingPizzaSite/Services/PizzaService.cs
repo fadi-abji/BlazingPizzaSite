@@ -1,6 +1,6 @@
 ﻿using BlazingPizzaSite.Model;
 
-namespace BlazingPizzaSite.Data
+namespace BlazingPizzaSite.Services
 {
     public class PizzaService
     {
