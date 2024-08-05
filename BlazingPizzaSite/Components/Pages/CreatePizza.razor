@@ -1,0 +1,45 @@
+﻿@page "/admin/createpizza"
+
+<h1>Add a new pizza</h1>
+
+<EditForm Model="@pizza" OnSubmit=@HandleSubmission OnValidSubmit=@ProcessInputData OnInvalidSubmit=@ShowFeedback>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="pizza.Name" />
+    <ValidationMessage For="@(() => pizza.Name)" />
+
+    <InputText id="description" @bind-Value="pizza.Description" />
+
+    <InputText id="chefemail" @bind-Value="pizza.ChefEmail" />
+    <ValidationMessage For="@(() => pizza.ChefEmail)" />
+
+    <InputNumber id="price" @bind-Value="pizza.Price" />
+    <ValidationMessage For="@(() => pizza.Price)" />
+</EditForm>
+
+@code {
+    private PizzaData pizza = new();
+
+    void HandleSubmission(EditContext context)
+    {
+        bool dataIsValid = context.Validate();
+        if (dataIsValid)
+        {
+            // Store valid data here
+        }
+    }
+
+    //If you use OnValidSubmit and OnInvalidSubmit instead, you don't have to check the validation state within each event handler:
+
+
+    void ProcessInputData(EditContext context)
+    {
+        // Store valid data here
+    }
+
+    void ShowFeedback(EditContext context)
+    {
+        // Take action here to help the user correct the issues
+    }
+}

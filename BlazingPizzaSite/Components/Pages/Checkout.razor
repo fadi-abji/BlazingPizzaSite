@@ -6,12 +6,14 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
+@* To implement the Dispose feature, you also have to let Blazor know. Add this code at the top of the page under the @inject statements. *@
+@implements IDisposable
 
 <div class="main">
 
 
 
-    <EditForm Model="Order.DeliveryAddress" OnSubmit="CheckSubmission">
+    <EditForm Model="Order.DeliveryAddress" OnValidSubmit="PlaceOrder" OnInvalidSubmit="ShowError">
 
         <div class="checkout-cols">
             <div class="checkout-order-details">
@@ -31,9 +33,11 @@
 
         </div>
 
-        <button class="checkout-button btn btn-warning" disabled=@isSubmitting>
+        <button class="checkout-button btn btn-warning" type="submit"  disabled=@isError>
             Place order
         </button>
+        <ValidationSummary />
+        <DataAnnotationsValidator />
     </EditForm>
 
 </div>
@@ -45,47 +49,88 @@
 
     bool isError = false;
 
+    private EditContext editContext;
+
+
+    protected override void OnInitialized()
+    {
+        editContext = new(Order.DeliveryAddress);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        isError = !editContext.Validate();
+        StateHasChanged();
+    }
+
+    //Because we've now created an event handler, we should dispose of it when the checkout component no longer needs it.
+    public void Dispose()
+    {
+        editContext.OnFieldChanged -= HandleFieldChanged;
+    }
+
+
+
     async Task PlaceOrder()
     {
-        try
-        {
-            //respond 400 error
-            var uri = NavigationManager.BaseUri + "orders";
-            var response = await HttpClient.PostAsJsonAsync(uri, OrderState.Order);
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-
-            // if(response.IsSuccessStatusCode)
-            // {
-            var newOrderId = await response.Content.ReadFromJsonAsync<int>();
-            OrderState.ResetOrder();
-            NavigationManager.NavigateTo($"myorders/{newOrderId}");
-            // }
-            // else
-            // {
-            //     var errorContent = await response.Content.ReadAsStringAsync();
-            //     Console.WriteLine($"Error: {response.StatusCode} - {errorContent}");
-            // }
-        }
-        catch (Exception ex)
-        {
-
-            throw;
-        }
+        var response = await HttpClient.PostAsJsonAsync(NavigationManager.BaseUri + "orders", OrderState.Order);
+        var newOrderId = await response.Content.ReadFromJsonAsync<int>();
+        OrderState.ResetOrder();
+        NavigationManager.NavigateTo($"myorders/{newOrderId}");
     }
 
-    private async Task CheckSubmission(EditContext editContext)
+
+    protected void ShowError()
     {
-        isSubmitting = true;
-        var model = editContext.Model as Address;
-        isError = string.IsNullOrWhiteSpace(model?.Name)
-            || string.IsNullOrWhiteSpace(model?.Line1)
-            || string.IsNullOrWhiteSpace(model?.PostalCode);
-        if (!isError)
-        {
-            await PlaceOrder();
-        }
-        isSubmitting = false;
+        isError = true;
     }
+
+    // async Task PlaceOrder()
+    // {
+    //     try
+    //     {
+    //         //respond 400 error
+
+    //         isError = false;
+    //         isSubmitting = true;
+
+    //         var uri = NavigationManager.BaseUri + "orders";
+    //         var response = await HttpClient.PostAsJsonAsync(uri, OrderState.Order);
+
+    //         var responseContent = await response.Content.ReadAsStringAsync();
+
+
+    //         // if(response.IsSuccessStatusCode)
+    //         // {
+    //         var newOrderId = await response.Content.ReadFromJsonAsync<int>();
+    //         OrderState.ResetOrder();
+    //         NavigationManager.NavigateTo($"myorders/{newOrderId}");
+    //         // }
+    //         // else
+    //         // {
+    //         //     var errorContent = await response.Content.ReadAsStringAsync();
+    //         //     Console.WriteLine($"Error: {response.StatusCode} - {errorContent}");
+    //         // }
+    //     }
+    //     catch (Exception ex)
+    //     {
+
+    //         throw;
+    //     }
+    // }
+
+    // private async Task CheckSubmission(EditContext editContext)
+    // {
+    //     isSubmitting = true;
+    //     var model = editContext.Model as Address;
+    //     isError = string.IsNullOrWhiteSpace(model?.Name)
+    //         || string.IsNullOrWhiteSpace(model?.Line1)
+    //         || string.IsNullOrWhiteSpace(model?.PostalCode);
+    //     if (!isError)
+    //     {
+    //         await PlaceOrder();
+    //     }
+    //     isSubmitting = false;
+    // }
 }
