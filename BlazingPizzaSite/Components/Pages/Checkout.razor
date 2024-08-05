@@ -8,21 +8,27 @@
 
 
 <div class="main">
-    <div class="checkout-cols">
-        <div class="checkout-order-details">
-            <h4>Review order</h4>
-            <OrderReview Order="Order" />
+    <EditForm Model="Order.DeliveryAddress" OnSubmit="CheckSubmission">
+
+
+        <div class="checkout-cols">
+            <div class="checkout-order-details">
+                <h4>Review order</h4>
+                <OrderReview Order="Order" />
+            </div>
+
+            <div class="checkout-delivery-address">
+                <h4>Deliver to...</h4>
+                <AddressEditor Address="Order.DeliveryAddress" />
+            </div>
+
         </div>
 
-        <div class="checkout-delivery-address">
-            <h4>Deliver to...</h4>
-            <AddressEditor Address="Order.DeliveryAddress" />
-        </div>
-    </div>
+        <button class="checkout-button btn btn-warning"  disabled=@isSubmitting>
+            Place order
+        </button>
+    </EditForm>
 
-    <button class="checkout-button btn btn-warning" @onclick="PlaceOrder" disabled=@isSubmitting>
-        Place order
-    </button>
 </div>
 
 @code {
@@ -34,7 +40,6 @@
     {
         try
         {
-            isSubmitting = true;
             //respond 400 error
             var uri = NavigationManager.BaseUri + "orders";
             var response = await HttpClient.PostAsJsonAsync(uri, OrderState.Order);
@@ -44,9 +49,9 @@
 
             // if(response.IsSuccessStatusCode)
             // {
-                var newOrderId = await response.Content.ReadFromJsonAsync<int>();
-                OrderState.ResetOrder();
-                NavigationManager.NavigateTo($"myorders/{newOrderId}");
+            var newOrderId = await response.Content.ReadFromJsonAsync<int>();
+            OrderState.ResetOrder();
+            NavigationManager.NavigateTo($"myorders/{newOrderId}");
             // }
             // else
             // {
@@ -56,8 +61,15 @@
         }
         catch (Exception ex)
         {
-            
-            throw; 
+
+            throw;
         }
+    }
+
+    private async Task CheckSubmission()
+    {
+        isSubmitting = true;
+        await PlaceOrder();
+        isSubmitting = false;
     }
 }
