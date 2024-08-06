@@ -1,4 +1,5 @@
 ﻿@using BlazingPizzaSite.Services
+@using Microsoft.AspNetCore.Components.Routing
 @inherits LayoutComponentBase
 @inject OrderState OrderState
 <div id="app">
@@ -13,7 +14,7 @@
       <div>Get Pizza</div>
     </NavLink>
 
-    <NavLink href="orderdetail/@OrderState.Order.OrderId" class="nav-tab">
+    <NavLink href=@($"myorders/{OrderState.Order.OrderId}") class="nav-tab">
       <img src="img/bike.svg" />
       <div>My Orders</div>
     </NavLink>
