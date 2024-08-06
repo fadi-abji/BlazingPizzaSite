@@ -21,14 +21,19 @@ builder.Services.AddScoped<PizzaService>();
 builder.Services.AddScoped<OrderState>();
 builder.Services.AddHttpClient();
 
-// Register HttpClient with scoped lifetime and configure the base address
-//builder.Services.AddScoped<HttpClient>(sp =>
-//{
-//    var navigationManager = sp.GetRequiredService<NavigationManager>();
-//    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
-//});
 
 var app = builder.Build();
+
+//// Initialize the database
+//var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+//using (var scope = scopeFactory.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<PizzaStoreContext>();
+//    if (await db.Database.EnsureCreatedAsync())
+//    {
+//        await SeedData.InitializeAsync(db);
+//    }
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

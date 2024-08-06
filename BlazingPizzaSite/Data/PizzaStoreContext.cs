@@ -33,7 +33,7 @@ namespace BlazingPizzaSite.Data
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Id = 4, Name = "Margherita", BasePrice = 9.99M, Description = "Traditional Italian pizza with tomatoes and basil", ImageUrl = "img/pizzas/margherita.jpg" });
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Id = 5, Name = "Basic Cheese Pizza", BasePrice = 11.99M, Description = "It's cheesy and delicious. Why wouldn't you want one?", ImageUrl = "img/pizzas/cheese.jpg" });
             modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Id = 6, Name = "Classic pepperoni", BasePrice = 10.5M, Description = "It's the pizza you grew up with, but Blazing hot!", ImageUrl = "img/pizzas/pepperoni.jpg" });
+            modelBuilder.Entity<PizzaSpecial>().HasData(new PizzaSpecial { Id = 9, Name = "Margherita Family Size", Description = "24\" of pure tomatoes and basil", BasePrice = 14.99m, ImageUrl = "img/pizzas/margherita.jpg", FixedSize = 24});
         }
-
     }
 }
