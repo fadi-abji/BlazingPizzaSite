@@ -33,4 +33,16 @@
     [Parameter] public Pizza Pizza { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public EventCallback OnConfirm { get; set; }
+
+
+    bool supportSizing = true;
+
+    protected override void OnInitialized()
+    {
+        if (Pizza is { Special.FixedSize: not null })
+        {
+            Pizza.Size = Pizza.Special.FixedSize.Value;
+            supportSizing = false;
+        }
+    }
 }
