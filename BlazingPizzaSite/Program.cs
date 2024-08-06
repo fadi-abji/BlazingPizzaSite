@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<PizzaStoreContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton<PizzaService>();
+builder.Services.AddScoped<PizzaService>();
 builder.Services.AddScoped<OrderState>();
 builder.Services.AddHttpClient();
 

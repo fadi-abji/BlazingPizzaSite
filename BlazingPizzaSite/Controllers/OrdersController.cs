@@ -64,5 +64,11 @@ namespace BlazingPizzaSite.Controllers
 
             return OrderWithStatus.FromOrder(order);
         }
+
+        [HttpGet("specials")]
+        public async Task<ActionResult<List<PizzaSpecial>>> GetPizzaSpecials()
+        {
+            return await _db.Specials.ToListAsync();
+        }
     }
 }

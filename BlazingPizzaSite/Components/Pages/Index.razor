@@ -77,17 +77,6 @@
         await base.OnInitializedAsync();
     }
 
-    // async Task RemovePizzaConfirmation(Pizza removePizza)
-    // {
-    //     //The server uses the IJSRuntime.InvokeAsync method to call the confirm function on the client side. 
-    //     // The response from the call returns a bool value. 
-    //     // If the result of the confirm dialog is true, the pizza is removed from the order.
-    //     if (await JavaScript.InvokeAsync<bool>("confirm", $"""Do you want to remove the "{removePizza.Special!.Name}" from your order?"""))
-    //     {
-    //         OrderState.RemoveConfiguredPizza(removePizza);
-    //     }
-    // }
-
     async Task RemovePizzaConfirmation(Pizza removePizza)
     {
         var messageParams = new

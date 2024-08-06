@@ -1,6 +1,7 @@
 ﻿@page "/checkout"
 @using BlazingPizzaSite.Model
 @using BlazingPizzaSite.Services
+@using System.Net.Http
 @inject OrderState OrderState
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -86,51 +87,4 @@
         isError = true;
     }
 
-    // async Task PlaceOrder()
-    // {
-    //     try
-    //     {
-    //         //respond 400 error
-
-    //         isError = false;
-    //         isSubmitting = true;
-
-    //         var uri = NavigationManager.BaseUri + "orders";
-    //         var response = await HttpClient.PostAsJsonAsync(uri, OrderState.Order);
-
-    //         var responseContent = await response.Content.ReadAsStringAsync();
-
-
-    //         // if(response.IsSuccessStatusCode)
-    //         // {
-    //         var newOrderId = await response.Content.ReadFromJsonAsync<int>();
-    //         OrderState.ResetOrder();
-    //         NavigationManager.NavigateTo($"myorders/{newOrderId}");
-    //         // }
-    //         // else
-    //         // {
-    //         //     var errorContent = await response.Content.ReadAsStringAsync();
-    //         //     Console.WriteLine($"Error: {response.StatusCode} - {errorContent}");
-    //         // }
-    //     }
-    //     catch (Exception ex)
-    //     {
-
-    //         throw;
-    //     }
-    // }
-
-    // private async Task CheckSubmission(EditContext editContext)
-    // {
-    //     isSubmitting = true;
-    //     var model = editContext.Model as Address;
-    //     isError = string.IsNullOrWhiteSpace(model?.Name)
-    //         || string.IsNullOrWhiteSpace(model?.Line1)
-    //         || string.IsNullOrWhiteSpace(model?.PostalCode);
-    //     if (!isError)
-    //     {
-    //         await PlaceOrder();
-    //     }
-    //     isSubmitting = false;
-    // }
 }
